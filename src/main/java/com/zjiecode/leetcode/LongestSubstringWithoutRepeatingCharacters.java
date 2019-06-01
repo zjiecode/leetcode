@@ -12,13 +12,35 @@ import java.util.Map;
 public class LongestSubstringWithoutRepeatingCharacters {
     public static void main(String[] args) {
         LongestSubstringWithoutRepeatingCharacters longestSubstringWithoutRepeatingCharacters = new LongestSubstringWithoutRepeatingCharacters();
-        System.out.println(longestSubstringWithoutRepeatingCharacters.lengthOfLongestSubstring("abcbbcd"));
+        System.out.println(longestSubstringWithoutRepeatingCharacters.lengthOfLongestSubstring("a"));
+    }
+
+    /**
+     * 滑动窗口，从最左边开始，遇到重复字符，就把窗口的开始调整到重复的第一个字符右边，继续开始扫描
+     * 当已知字符范围的时候，可以用数组代替map，见小查找时间
+     */
+    public int lengthOfLongestSubstring(String s) {
+        if (s == null) {
+            return 0;
+        }
+        int[] map = new int[128];
+        int max = 0;
+        for (int i = 0, w = 0; i < s.length(); i++) {
+            //w为滑动窗口左边的边界
+            w = Math.max(map[s.charAt(i)], w);
+            //求出当前窗口长度
+            max = Math.max(max, i - w + 1);
+            //储存当前字符位置，下次遇到这个字符，窗口就从字符右边开始
+            map[s.charAt(i)] = i + 1;
+
+        }
+        return max;
     }
 
     /**
      * 滑动窗口，从最左边开始，遇到重复字符，就把窗口的开始调整到重复的第一个字符右边，继续开始扫描
      */
-    public int lengthOfLongestSubstring(String s) {
+    public int lengthOfLongestSubstring2(String s) {
         if (s == null) {
             return 0;
         }
@@ -42,7 +64,7 @@ public class LongestSubstringWithoutRepeatingCharacters {
     /**
      * 暴力求解
      */
-    public int lengthOfLongestSubstring2(String s) {
+    public int lengthOfLongestSubstring3(String s) {
         if (s == null || s.length() == 0) {
             return 0;
         }
